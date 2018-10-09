@@ -1,4 +1,5 @@
 # lib
+import opentracing
 from django.conf import settings
 from jaeger_client import Config
 
