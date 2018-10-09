@@ -19,6 +19,7 @@ setup(
     install_requires=[
         'django>=2',
         'jaeger-client',
+        'opentracing',
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
