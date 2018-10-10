@@ -10,7 +10,7 @@ setup(
     version=__version__,
     url='https://github.com/cloudcix/django-jaeger-middleware',
     download_url='https://github.com/cloudcix/django-jaeger-middleware/releases/',
-    license='GPL-3.0',
+    license='MIT',
     author='cloudcix',
     author_email='developers@cix.ie',
     description='Django middleware to handle tracing requests using Jaeger Python Client.',
