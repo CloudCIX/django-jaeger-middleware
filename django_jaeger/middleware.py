@@ -61,6 +61,7 @@ class DjangoJaegerMiddleware:
         response = self.get_response(request)
 
         # Close the span and return the response
+        span.set_tag('status', response.status_code)  # Add status code as tag before finishing
         span.finish()
         return response
 
