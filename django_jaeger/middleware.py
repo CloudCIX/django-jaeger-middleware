@@ -22,7 +22,7 @@ class DjangoJaegerMiddleware:
         """
         self.get_response = get_response
         config = Config(config=settings.TRACER_CONFIG, service_name=settings.TRACER_SERVICE_NAME, validate=True)
-        tracer = config.initialize_tracer()
+        tracer = config.initialize_tracer() or opentracing.tracer
         settings.TRACER = tracer
         self.tracer = tracer
 
