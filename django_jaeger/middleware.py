@@ -45,16 +45,16 @@ class DjangoJaegerMiddleware:
 
         # Try to start a new span from the trace info
         span = None
-        tags = self._get_tags(request)
+        name = '{} {}'.format(request.method, request.get_full_path().lstrip('/').split('?')[0])
         try:
             span_ctx = self.tracer.extract(opentracing.Format.HTTP_HEADERS, headers)
-            span = self.tracer.start_span('request', child_of=span_ctx, tags=tags)
+            span = self.tracer.start_span(name, child_of=span_ctx)
         except (opentracing.InvalidCarrierException, opentracing.SpanContextCorruptedException) as e:
             # Start a completely new span
-            span = self.tracer.start_span('request', tags=tags)
+            span = self.tracer.start_span(name)
         if span is None:
             # Shouldn't be but we'll check anyway
-            span = self.tracer.start_span('request', tags=tags)
+            span = self.tracer.start_span(name)
 
         # Attach the span to the request and do the actual view code
         request.span = span
@@ -64,14 +64,3 @@ class DjangoJaegerMiddleware:
         span.set_tag('status', response.status_code)  # Add status code as tag before finishing
         span.finish()
         return response
-
-    def _get_tags(self, request):
-        """
-        Given a Django request object, generate a tag dict to attach to the span
-        :param request: The user's request
-        """
-        return {
-            'path': request.get_full_path().lstrip('/').split('?')[0],
-            'method': request.method,
-        }
-
