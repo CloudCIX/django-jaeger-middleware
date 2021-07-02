@@ -14,7 +14,7 @@ setup(
     author='cloudcix',
     author_email='developers@cix.ie',
     description='Django middleware to handle tracing requests using Jaeger Python Client.',
-    long_rescription=long_description,
+    long_description=long_description,
     packages=['django_jaeger'],
     install_requires=[
         'django>=2',
