@@ -1,7 +1,11 @@
+# stdlib
+import re
 # lib
 import opentracing
 from django.conf import settings
 from jaeger_client import Config
+
+ID_PATTERN = re.compile(r'([0-9]+)')
 
 
 class DjangoJaegerMiddleware:
@@ -45,7 +49,12 @@ class DjangoJaegerMiddleware:
 
         # Try to start a new span from the trace info
         span = None
-        name = '{} {}'.format(request.method, request.get_full_path().lstrip('/').split('?')[0])
+        # Format the URL to; get the full path, no leading slash, no query string, and replace each block of numbers
+        # with the word `id`
+        formatted_url = request.get_full_path().lstrip('/').split('?')[0]
+        # Sub id numbers for the word id. Through context we'll know what it means
+        formatted_url = ID_PATTERN.sub('id', formatted_url)
+        name = '{} {}'.format(request.method, formatted_url)
         try:
             span_ctx = self.tracer.extract(opentracing.Format.HTTP_HEADERS, headers)
             span = self.tracer.start_span(name, child_of=span_ctx)
