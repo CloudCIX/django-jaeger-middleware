@@ -52,6 +52,8 @@ class DjangoJaegerMiddleware:
         # Format the URL to; get the full path, no leading slash, no query string, and replace each block of numbers
         # with the word `id`
         formatted_url = request.get_full_path().lstrip('/').split('?')[0]
+        # Get the list of ids in the url to add to the request as a tag
+        ids = ", ".join(ID_PATTERN.findall(formatted_url))
         # Sub id numbers for the word id. Through context we'll know what it means
         formatted_url = ID_PATTERN.sub('id', formatted_url)
         name = '{} {}'.format(request.method, formatted_url)
@@ -64,6 +66,9 @@ class DjangoJaegerMiddleware:
         if span is None:
             # Shouldn't be but we'll check anyway
             span = self.tracer.start_span(name)
+
+        # Add the ids to the span as a tag
+        span.set_tag('request_ids', ids)
 
         # Attach the span to the request and do the actual view code
         request.span = span
