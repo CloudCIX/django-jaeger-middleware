@@ -67,14 +67,13 @@ class DjangoJaegerMiddleware:
             # Shouldn't be but we'll check anyway
             span = self.tracer.start_span(name)
 
-        # Add the ids to the span as a tag
-        span.set_tag('request_ids', ids)
-
         # Attach the span to the request and do the actual view code
         request.span = span
         response = self.get_response(request)
 
         # Close the span and return the response
+        # Add the ids to the span as a tag
+        span.set_tag('request_ids', ids)
         span.set_tag('status', response.status_code)  # Add status code as tag before finishing
         span.finish()
         return response
