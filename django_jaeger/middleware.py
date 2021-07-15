@@ -53,7 +53,7 @@ class DjangoJaegerMiddleware:
         # with the word `id`
         formatted_url = request.get_full_path().lstrip('/').split('?')[0]
         # Get the list of ids in the url to add to the request as a tag
-        ids = ", ".join(ID_PATTERN.findall(formatted_url))
+        ids = ', '.join(ID_PATTERN.findall(formatted_url))
         # Sub id numbers for the word id. Through context we'll know what it means
         formatted_url = ID_PATTERN.sub('id', formatted_url)
         name = '{} {}'.format(request.method, formatted_url)
