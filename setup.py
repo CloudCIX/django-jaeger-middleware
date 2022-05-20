@@ -17,7 +17,7 @@ setup(
     long_description=long_description,
     packages=['django_jaeger'],
     install_requires=[
-        'django>=2.2.0',
+        'django==2.2.28',
         'jaeger-client',
         'opentracing',
     ],
