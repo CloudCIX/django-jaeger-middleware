@@ -17,7 +17,7 @@ setup(
     long_description=long_description,
     packages=['django_jaeger'],
     install_requires=[
-        'django>=2',
+        'django>=3.2',
         'jaeger-client',
         'opentracing',
     ],
@@ -28,6 +28,6 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Natural Language :: English',
-        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.10',
     ],
 )
